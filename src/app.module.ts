@@ -6,9 +6,15 @@ import { AiService } from './ai/ai.service';
 import { PostgresService } from './db/postgres.service';
 import { MongoService } from './db/mongo.service';
 import { VizService } from './viz/viz.service';
+import { UsersModule } from './users/users.module';
+import { TypeOrmConfigModule } from './db/typeorm.config.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true })],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }), 
+    UsersModule,
+    TypeOrmConfigModule
+  ],
   controllers: [AskController],
   providers: [AskService, AiService, PostgresService, MongoService, VizService],
 })
