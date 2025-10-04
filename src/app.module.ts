@@ -8,12 +8,14 @@ import { MongoService } from './db/mongo.service';
 import { VizService } from './viz/viz.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmConfigModule } from './db/typeorm.config.module';
+import { UserConnectionsModule } from './user-connections/user-connections.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), 
     UsersModule,
-    TypeOrmConfigModule
+    TypeOrmConfigModule,
+    UserConnectionsModule
   ],
   controllers: [AskController],
   providers: [AskService, AiService, PostgresService, MongoService, VizService],
