@@ -9,9 +9,9 @@ export class UserConnectionsController {
 
     @Post(':userId')
   createConnection(@Param('userId') userId: string, @Body() createConnectionDto: CreateUserConnectionDto) {
-    return this.userConnectionsService.createConnection(+userId, createConnectionDto);
+    return this.userConnectionsService.createConnection(userId, createConnectionDto);
   }
-  
+
   @Get()
   findAll() {
     return this.userConnectionsService.findAll();

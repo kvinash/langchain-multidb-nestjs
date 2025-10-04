@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserConnectionDto } from './dto/create-user-connection.dto';
 import { UpdateUserConnectionDto } from './dto/update-user-connection.dto';
 import { UserConnection } from '../user-connections/entities/user-connection.entity';
-import { UserRepository } from '../users/users.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserConnectionsService {
-  constructor(private readonly userRepository: UserRepository) {}
+    constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+
+    @InjectRepository(UserConnection)
+    private readonly connectionRepository: Repository<UserConnection>,
+  ) {}
 
     async createConnection(userId: string, createConnectionDto: CreateUserConnectionDto): Promise<UserConnection> {
-    const user = await this.userRepository.findOneById(userId);
+    const user = await this.userRepository.findOne({
+    where: { id: userId },
+    relations: ['connections'],
+  });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     const userConnection = new UserConnection();
-    userConnection.dbConfig = JSON.stringify(createConnectionDto.dbConfig);
+    userConnection.dbConfig = createConnectionDto.dbConfig;
     userConnection.dbPassword = createConnectionDto.dbPassword;
-
+  
+    await this.connectionRepository.save(userConnection);
+      // Initialize connections array if it's undefined
+  if (!user.connections) {
+    user.connections = [];
+  }
     user.connections.push(userConnection);
-
+console.log("user",user);   
     await this.userRepository.save(user);
 
     return userConnection;

@@ -6,8 +6,8 @@ export class UserConnection {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('jsonb')
-  dbConfig: string;
+  @Column({ type: 'jsonb' })
+  dbConfig: Object;
 
   @Column()
   dbPassword: string;
