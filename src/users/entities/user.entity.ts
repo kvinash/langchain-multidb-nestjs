@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { UserConnection } from '../../user-connections/entities/user-connection.entity';
 
 @Entity()
 export class User {
@@ -16,4 +17,8 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToMany(() => UserConnection)
+  @JoinTable({ name: 'user_connection_mapping' })
+  connections: UserConnection[];
 }

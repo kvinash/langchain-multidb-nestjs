@@ -1,15 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class UserConnection {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column('jsonb')
+  dbConfig: string;
 
-    // Add relaion to User entity
-    @ManyToOne(() => User, user => user.userConnections, { onDelete: 'CASCADE' })
-    userId: User;
+  @Column()
+  dbPassword: string;
 
-
-
+  @ManyToOne(() => User, user => user.connections)
+  user: User;
 }

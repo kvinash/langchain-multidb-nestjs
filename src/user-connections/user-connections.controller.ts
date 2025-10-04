@@ -7,11 +7,11 @@ import { UpdateUserConnectionDto } from './dto/update-user-connection.dto';
 export class UserConnectionsController {
   constructor(private readonly userConnectionsService: UserConnectionsService) {}
 
-  @Post()
-  create(@Body() createUserConnectionDto: CreateUserConnectionDto) {
-    return this.userConnectionsService.create(createUserConnectionDto);
+    @Post(':userId')
+  createConnection(@Param('userId') userId: string, @Body() createConnectionDto: CreateUserConnectionDto) {
+    return this.userConnectionsService.createConnection(+userId, createConnectionDto);
   }
-
+  
   @Get()
   findAll() {
     return this.userConnectionsService.findAll();
